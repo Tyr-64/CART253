@@ -30,7 +30,7 @@ function draw() {
 
     // Draw a pyramid
     // How many levels for the pyramid
-    const levels = 10;
+    const levels = 40;
     // Loop through every level (backwards)
     for (let level = levels; level > 0; level--) {
         // Draw this layer
@@ -42,14 +42,14 @@ function draw() {
         // No line around the levels
         noStroke();
         // Set the fill colour to our shade (RGB)
-        fill(shade, shade, 0);
+        fill(shade, shade, shade);
         // Draw rectangles from the centre
         rectMode(CENTER);
         // Draw the rectangle in the centre of the canvas
         // (320, 320) with a size based on the level
         // e.g. level 1 will be a 48x48 rectangle and
         // level 10 will be a 480x480 rectangle
-        rect(320, 320, level * 20, level * 20);
+        rect(320, 320, level * 20, level * 60);
         pop();
     }
 
