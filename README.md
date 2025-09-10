@@ -1,2 +1,2 @@
-# CART253-HelloWorld
-CART 253 Hello, World challenge repository with Sabine Rosenberg
+# CART253
+CART 253 repository with Sabine Rosenberg
