@@ -14,14 +14,16 @@ let skyBlue = 250;
 
 // The sun
 
-// Colour
-let sunRed = 255;
-let sunGreen = 255;
-let sunBlue = 0;
-// Position and size
-let sunX = 500;
-let sunY = 70;
-let sunSize = 100;
+let sun = {
+    fill: {
+        red: 255,
+        green: 255,
+        blue: 0
+    },
+    x: 500,
+    y: 70,
+    size: 100
+};
 
 // My self-esteem
 
@@ -49,9 +51,9 @@ function draw() {
 
     // The sun
     push();
-    fill(sunRed, sunGreen, sunBlue);
+    fill(sun.fill.red, sun.fill.green, sun.fill.blue);
     noStroke();
-    ellipse(sunX, sunY, sunSize);
+    ellipse(sun.x, sun.y, sun.size);
     pop();
 
     // My self esteem
