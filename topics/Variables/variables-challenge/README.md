@@ -1,4 +1,4 @@
-# TITLE OF PROJECT
+# Mr Furious gets mad!
 
 AUTHOR NAME
 
