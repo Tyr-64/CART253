@@ -1,6 +1,6 @@
 # Mr Furious gets mad!
 
-AUTHOR NAME
+Willow Casinghino
 
 [View this project online](URL_FOR_THE_RUNNING_PROJECT)
 
