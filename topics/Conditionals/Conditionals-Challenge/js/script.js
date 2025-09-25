@@ -14,10 +14,10 @@ const puck = {
 };
 
 let target = {
-    x: 100,
-    y: 100,
-    size: 80,
-    fill: "#34FF00",
+  x: 100,
+  y: 100,
+  size: 80,
+  fill: "#34FF00",
 }
 
 const user = {
@@ -40,16 +40,16 @@ function setup() {
 function draw() {
   background("#aaaaaa");
 
-  
-  
+
+
   // Move user circle
   moveUser();
-  
+
   // Draw the user and puck
- 
-  
+
+
   drawTarget();
-   drawUser();
+  drawUser();
   drawPuck();
   movePuck();
   checkTarget();
@@ -86,34 +86,33 @@ function drawPuck() {
 }
 
 function movePuck() {
-    let d = dist(user.x, user.y, puck.x, puck.y);
-    let dX = puck.x - user.x;
-    let dY = puck.y - user.y;
-    console.log(dY);
-    if(d < user.size){
-        console.log("touching");
-        puck.x += dX/15;
-}
-    if(d < user.size){
-        puck.x += dX/15;
-    }
-    if(d < user.size){
-        puck.y += dY/15;
-    }
+  let d = dist(user.x, user.y, puck.x, puck.y);
+  let dX = puck.x - user.x;
+  let dY = puck.y - user.y;
+  console.log(dY);
+  if (d < user.size) {
+    console.log("touching");
+    puck.x += dX / 15;
+  }
+  if (d < user.size) {
+    puck.x += dX / 15;
+  }
+  if (d < user.size) {
+    puck.y += dY / 15;
+  }
 }
 function drawTarget() {
-    push();
-    fill(target.fill);
-    ellipse(target.x,target.y,target.size);
-    pop();
+  push();
+  fill(target.fill);
+  ellipse(target.x, target.y, target.size);
+  pop();
 }
 function checkTarget() {
-    let dT = dist(puck.x, puck.y, target.x, target.y);
-    if(dT < puck.size/2){
-        target.fill = "#1e00ffff";
-    }
-    else{
-        target.fill = "#34FF00";
-    }
+  let dT = dist(puck.x, puck.y, target.x, target.y);
+  if (dT < puck.size / 2) {
+    target.fill = "#1e00ffff";
+  }
+  else {
+    target.fill = "#34FF00";
+  }
 }
-    
