@@ -7,7 +7,7 @@
 
 "use strict";
 /**
- * OH LOOK I DIDN'T DESCRIBE SETUP!!
+ * Establish scene objects, functions, and preload images
 */
 const ball = {
     x: 400,
@@ -16,19 +16,25 @@ const ball = {
     size: 100
 };
 
-let smiler;
-
-// let smiler;
-
-// function preload() {
-//     smiler = loadImage('/assets/images/clown.jpg');
-//  }
-function preload(){
-    smiler = loadImage('./assets/images/smiler.jpg');
+const hole = {
+    x: 500,
+    y: 100,
+    color: "#000000",
+    xSize: 100,
+    ySize: 50
 }
 
+let hand = {
+    x: undefined,
+    y: undefined,
+    img: undefined
+}
+
+// function preload(){
+//     smiler = loadImage('./assets/images/smiler.jpg');
+// }
+// set canvas and background
 function setup() {
-    //let smiler = loadImage('assets/images/clown.png');
     createCanvas(800,500);
     background("#000000ff");
 }
@@ -39,9 +45,6 @@ function setup() {
 */
 function draw() {
     background("#000000ff");
-    image(smiler,0,0,800,200);
-    image(smiler,0,200,800,200);
-    image(smiler,0,400,800,200);
     
 }
 
