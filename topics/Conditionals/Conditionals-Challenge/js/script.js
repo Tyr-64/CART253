@@ -18,7 +18,7 @@ let target = {
   y: 100,
   size: 80,
   fill: "#34FF00",
-}
+};
 
 const user = {
   x: undefined, // will be mouseX
