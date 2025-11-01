@@ -16,6 +16,8 @@ const ball = {
     size: 100
 };
 
+let antonia = false;
+
 const hole = {
     x: 500,
     y: 100,
@@ -30,13 +32,13 @@ let hand = {
     size: 100,
     img1: undefined,
     img2: undefined,
-    img3: undefined
+    img3: undefined,
 }
 // preload important scene images
 function preload(){
-    hand.img1 = loadImage('./assets/images/one.png');
-    hand.img2 = loadImage('./assets/images/two.jpg');
-    hand.img3 = loadImage('./assets/images/three.jpg');
+    hand.img1 = loadImage('./assets/images/left.png');
+    hand.img2 = loadImage('./assets/images/middle.png');
+    hand.img3 = loadImage('./assets/images/right.png');
 }
 
 // set canvas and background
@@ -52,17 +54,18 @@ function setup() {
 function draw() {
     background("#000000ff");
     drawHand();
-    
+
 }
+
 // Draw hand image depending on location, scaling with height to create a depth effect
 function drawHand () {
-    hand.size = distance(mouseY) * 100;
+    hand.size = distance(mouseY) * 200;
     hand.y = constrain(mouseY, 100, 400);
     hand.x = constrain(mouseX - (50*distance(mouseY)), 0, 800 - (100*distance(mouseY)));
-    if (mouseX <= 200) {
+    if (mouseX <= 300) {
         image(hand.img1, hand.x, hand.y, hand.size, hand.size);
     }
-    else if (mouseX <= 600){
+    else if (mouseX <= 500){
         image(hand.img2, hand.x, hand.y, hand.size, hand.size);
     }
     else {
