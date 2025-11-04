@@ -16,7 +16,6 @@ const ball = {
     size: 100
 };
 
-let antonia = false;
 
 const hole = {
     x: 500,
@@ -45,6 +44,7 @@ function preload(){
 function setup() {
     createCanvas(800,500);
     background("#000000ff");
+    noCursor();
 }
 
 
@@ -63,13 +63,13 @@ function drawHand () {
     hand.y = constrain(mouseY, 100, 400);
     hand.x = constrain(mouseX - (50*distance(mouseY)), 0, 800 - (100*distance(mouseY)));
     if (mouseX <= 300) {
-        image(hand.img1, hand.x, hand.y, hand.size, hand.size);
+        image(hand.img1, hand.x-25, hand.y, hand.size, hand.size);
     }
     else if (mouseX <= 500){
-        image(hand.img2, hand.x, hand.y, hand.size, hand.size);
+        image(hand.img2, hand.x-25, hand.y, hand.size, hand.size);
     }
     else {
-        image(hand.img3, hand.x, hand.y, hand.size, hand.size);
+        image(hand.img3, hand.x-25, hand.y, hand.size, hand.size);
     }
 }
 // calculates a 'distance' value from the height of an element, returning a value from 0 to 1 with a cutoff on the horizon 100 pixels below the top of the frame
