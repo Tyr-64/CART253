@@ -16,6 +16,8 @@ const ball = {
     size: 100
 };
 
+let bg;
+
 
 const hole = {
     x: 500,
@@ -38,6 +40,7 @@ function preload(){
     hand.img1 = loadImage('./assets/images/left.png');
     hand.img2 = loadImage('./assets/images/middle.png');
     hand.img3 = loadImage('./assets/images/right.png');
+    bg = loadImage('./assets/images/bgartjam.jpg');
 }
 
 // set canvas and background
@@ -53,14 +56,16 @@ function setup() {
 */
 function draw() {
     background("#000000ff");
+    image(bg, 0,0);
     drawHand();
-
+    console.log(hand.x, hand.y);
+    imgMove();
 }
 
 // Draw hand image depending on location, scaling with height to create a depth effect
 function drawHand () {
     hand.size = distance(mouseY) * 200;
-    hand.y = constrain(mouseY, 100, 400);
+    hand.y = constrain(mouseY, 50, 400);
     hand.x = constrain(mouseX - (50*distance(mouseY)), 0, 800 - (100*distance(mouseY)));
     if (mouseX <= 300) {
         image(hand.img1, hand.x-25, hand.y, hand.size, hand.size);
@@ -72,14 +77,31 @@ function drawHand () {
         image(hand.img3, hand.x-25, hand.y, hand.size, hand.size);
     }
 }
-// calculates a 'distance' value from the height of an element, returning a value from 0 to 1 with a cutoff on the horizon 100 pixels below the top of the frame
+// calculates a 'distance' value from the height of a hand, returning a value from 0 to 1 with a cutoff on the horizon 100 pixels below the top of the frame
 function distance(Ypos){
-    let sizeMult = map(mouseY, 100, 500, 0.1, 1, true);
+    let sizeMult = map(mouseY, 300, 500, 0.48, 1.8, true);
     if (sizeMult == 0){
         sizeMult += 0.1;
     }
     console.log(sizeMult);
     return sizeMult;
 }
+function imgMove(){
+    if (hand.x >= 506 && hand.x <= 595 && hand.y >=251 && hand.y <= 300){
+        image(hand.img1, 0, 0);
+    }
+    else if (hand.x >= 506 && hand.x <= 595 && hand.y >=168 && hand.y <= 216){
+        image(hand.img1, 0, 0);
+    }
+    else if (hand.x >= 506 && hand.x <= 595 && hand.y >=85 && hand.y <= 137){
+        image(hand.img1, 0, 0);
+    }
+    else if (hand.x >= 506 && hand.x <= 595 && hand.y >=251 && hand.y <= 300){
+        image(hand.img1, 0, 0);
+    }
+}
+// function imgDisplay(){
+
+// }
 
 
