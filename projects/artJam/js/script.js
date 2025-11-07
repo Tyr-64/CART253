@@ -16,7 +16,24 @@ const ball = {
     size: 100
 };
 
-let bg;
+let bg = {
+    main: undefined,
+    up: undefined,
+    right: undefined,
+    smile: undefined,
+    down: undefined,
+    left: undefined,
+    frown: undefined
+}
+
+let button = {
+    up: false,
+    down: false,
+    right: false,
+    left: false,
+    smile: false,
+    frown: false
+}
 
 
 const hole = {
@@ -35,12 +52,19 @@ let hand = {
     img2: undefined,
     img3: undefined,
 }
-// preload important scene images
+// preload image assets
 function preload(){
     hand.img1 = loadImage('./assets/images/left.png');
     hand.img2 = loadImage('./assets/images/middle.png');
     hand.img3 = loadImage('./assets/images/right.png');
-    bg = loadImage('./assets/images/bgartjam.jpg');
+    bg.main = loadImage('./assets/images/bgartjam.jpg');
+    bg.up = loadImage('./assets/images/bgarrowup.jpg');
+    bg.down = loadImage('./assets/images/bgarrowdown.jpg');
+    bg.smile = loadImage('./assets/images/bgsmile.jpg');
+    bg.frown = loadImage('./assets/images/bgfrown.jpg');
+    bg.left = loadImage('./assets/images/bgarrowleft.jpg');
+    bg.right = loadImage('./assets/images/bgarrowright.jpg');
+
 }
 
 // set canvas and background
@@ -56,10 +80,17 @@ function setup() {
 */
 function draw() {
     background("#000000ff");
-    image(bg, 0,0);
+    image(bg.main, 0,0);
+    buttonPress();
+    
     drawHand();
-    console.log(hand.x, hand.y);
-    imgMove();
+    button.up = false;
+    button.right = false;
+    button.smile = false;
+    button.down = false;
+    button.left = false;
+    button.frown = false;
+    imgDisplay();
 }
 
 // Draw hand image depending on location, scaling with height to create a depth effect
@@ -83,25 +114,42 @@ function distance(Ypos){
     if (sizeMult == 0){
         sizeMult += 0.1;
     }
-    console.log(sizeMult);
     return sizeMult;
 }
-function imgMove(){
-    if (hand.x >= 506 && hand.x <= 595 && hand.y >=251 && hand.y <= 300){
-        image(hand.img1, 0, 0);
+function buttonPress(){
+    // up arrow
+    if (hand.x >= 506 && hand.x <= 593 && hand.y >=251 && hand.y <= 300){
+        image(bg.up, 0, 0);
+        button.up = true;
     }
-    else if (hand.x >= 506 && hand.x <= 595 && hand.y >=168 && hand.y <= 216){
-        image(hand.img1, 0, 0);
+    // right arrow
+    else if (hand.x >= 506 && hand.x <= 593 && hand.y >=168 && hand.y <= 216){
+        image(bg.right, 0, 0);
+        button.right = true;
     }
-    else if (hand.x >= 506 && hand.x <= 595 && hand.y >=85 && hand.y <= 137){
-        image(hand.img1, 0, 0);
+    // smiley :)
+    else if (hand.x >= 506 && hand.x <= 593 && hand.y >=85 && hand.y <= 137){
+        image(bg.smile, 0, 0);
+        button.smile = true;
     }
-    else if (hand.x >= 506 && hand.x <= 595 && hand.y >=251 && hand.y <= 300){
-        image(hand.img1, 0, 0);
+    //down arrow
+    else if (hand.x >= 168 && hand.x <= 250 && hand.y >=251 && hand.y <= 300){
+        image(bg.down, 0, 0);
+        button.down = true;
+    }
+    // left arrow
+    else if (hand.x >= 168 && hand.x <= 250 && hand.y >=168 && hand.y <= 216){
+        image(bg.left, 0, 0);
+        button.left = true;
+    }
+    // frown :(
+    else if (hand.x >= 168 && hand.x <= 250 && hand.y >=85 && hand.y <= 137){
+        image(bg.frown, 0, 0);
+        button.frown = true;
     }
 }
-// function imgDisplay(){
-
-// }
+function imgDisplay(){
+    console.log(button.up, button. right, button.smile, button.down, button.left, button.frown);
+}
 
 
