@@ -35,6 +35,16 @@ let button = {
     frown: false
 }
 
+let display = {
+    pics: [],
+    x: 550,
+    y: 150,
+}
+
+let i = 1;
+
+let delay = false;
+
 
 const hole = {
     x: 500,
@@ -64,6 +74,23 @@ function preload(){
     bg.frown = loadImage('./assets/images/bgfrown.jpg');
     bg.left = loadImage('./assets/images/bgarrowleft.jpg');
     bg.right = loadImage('./assets/images/bgarrowright.jpg');
+    display.pics[1] = loadImage('./assets/images/1.jpg');
+    display.pics[2] = loadImage('./assets/images/2.jpg');
+    display.pics[3] = loadImage('./assets/images/3.jpg');
+    display.pics[4] = loadImage('./assets/images/4.jpg');
+    display.pics[5] = loadImage('./assets/images/5.jpg');
+    display.pics[6] = loadImage('./assets/images/6.jpg');
+    display.pics[7] = loadImage('./assets/images/7.jpg');
+    display.pics[8] = loadImage('./assets/images/8.jpg');
+    display.pics[9] = loadImage('./assets/images/9.jpg');
+    display.pics[10] = loadImage('./assets/images/10.jpg');
+    display.pics[11] = loadImage('./assets/images/11.jpg');
+    display.pics[12] = loadImage('./assets/images/12.jpg');
+    display.pics[13] = loadImage('./assets/images/13.jpg');
+    display.pics[14] = loadImage('./assets/images/14.jpg');
+    display.pics[15] = loadImage('./assets/images/15.jpg');
+
+
 
 }
 
@@ -71,7 +98,7 @@ function preload(){
 function setup() {
     createCanvas(800,500);
     background("#000000ff");
-    noCursor();
+    //noCursor();
 }
 
 
@@ -82,15 +109,17 @@ function draw() {
     background("#000000ff");
     image(bg.main, 0,0);
     buttonPress();
-    
+    imgDisplay();
     drawHand();
+    noCursor();
     button.up = false;
     button.right = false;
     button.smile = false;
     button.down = false;
     button.left = false;
     button.frown = false;
-    imgDisplay();
+    //console.log(mouseX, mouseY);
+    
 }
 
 // Draw hand image depending on location, scaling with height to create a depth effect
@@ -108,7 +137,7 @@ function drawHand () {
         image(hand.img3, hand.x-25, hand.y, hand.size, hand.size);
     }
 }
-// calculates a 'distance' value from the height of a hand, returning a value from 0 to 1 with a cutoff on the horizon 100 pixels below the top of the frame
+// calculates a 'distance' value from the height of a hand, returning a value from 0 to 1 with a cutoff on the horizon 300 pixels below the top of the frame
 function distance(Ypos){
     let sizeMult = map(mouseY, 300, 500, 0.48, 1.8, true);
     if (sizeMult == 0){
@@ -118,12 +147,12 @@ function distance(Ypos){
 }
 function buttonPress(){
     // up arrow
-    if (hand.x >= 506 && hand.x <= 593 && hand.y >=251 && hand.y <= 300){
+    if (hand.x >= 506 && hand.x <= 593 && hand.y >=251 && hand.y <= 300 && display.y > 0){
         image(bg.up, 0, 0);
         button.up = true;
     }
     // right arrow
-    else if (hand.x >= 506 && hand.x <= 593 && hand.y >=168 && hand.y <= 216){
+    else if (hand.x >= 506 && hand.x <= 593 && hand.y >=168 && hand.y <= 216 && display.x < 994){
         image(bg.right, 0, 0);
         button.right = true;
     }
@@ -133,12 +162,12 @@ function buttonPress(){
         button.smile = true;
     }
     //down arrow
-    else if (hand.x >= 168 && hand.x <= 250 && hand.y >=251 && hand.y <= 300){
+    else if (hand.x >= 168 && hand.x <= 250 && hand.y >=251 && hand.y <= 300 && display.y < 930){
         image(bg.down, 0, 0);
         button.down = true;
     }
     // left arrow
-    else if (hand.x >= 168 && hand.x <= 250 && hand.y >=168 && hand.y <= 216){
+    else if (hand.x >= 168 && hand.x <= 250 && hand.y >=168 && hand.y <= 216 && display.x > 0){
         image(bg.left, 0, 0);
         button.left = true;
     }
@@ -149,7 +178,39 @@ function buttonPress(){
     }
 }
 function imgDisplay(){
-    console.log(button.up, button. right, button.smile, button.down, button.left, button.frown);
+    // let dispY = constrain(150, 0, 1200);
+    // let dispX = constrain(550, 0, 1200);
+    image(display.pics[i],293,55, 205, 270, display.x, display.y, 205, 270);
+    if (button.up == true){
+        display.y -= 2;
+        console.log(display.y);
+    }
+    else if (button.down == true) {
+        display.y += 2;
+        console.log(display.y);
+    }
+    else if(button.left == true){
+        display.x -= 2;
+        console.log(display.x);
+    }
+    else if(button.right == true){
+        display.x += 2;
+        console.log(display.x);
+    }
+    else if(button.smile == true && delay == false){
+        i ++;
+        delay = true;
+        setTimeout(nextPic, 1000);
+    }
+    else if(button.frown == true && delay == false){
+        i ++;
+        delay = true;
+        setTimeout(nextPic, 1000);
+    }
+}
+
+function nextPic(){
+    delay = false;
 }
 
 
