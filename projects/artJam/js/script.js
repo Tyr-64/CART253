@@ -35,10 +35,18 @@ let button = {
     frown: false
 }
 
+let blendRight = ["BLEND", "HARD_LIGHT", "SOFT_LIGHT", "ADD", "LIGHTEST", "MULTIPLY"];
+
+
 let display = {
     pics: [],
     x: 550,
     y: 150,
+    transfer: undefined,
+    right: undefined,
+    left: undefined,
+    rightActive: false,
+    leftActive: false,
 }
 
 let i = 1;
@@ -119,6 +127,9 @@ function draw() {
     button.left = false;
     button.frown = false;
     //console.log(mouseX, mouseY);
+    if(display.rightActive == true){
+        image(display.right,0 ,0);
+    }
     
 }
 
@@ -198,6 +209,14 @@ function imgDisplay(){
         console.log(display.x);
     }
     else if(button.smile == true && delay == false){
+        display.transfer = display.pics[i].get(display.x, display.y, 205, 270);
+        if(display.rightActive == true){
+            display.right.blend(display.transfer,0,0,205, 270,0,0,205,270, ADD);
+        }
+        else if(display.rightActive == false){
+            display.right = display.transfer;
+        }
+        display.rightActive = true;
         i ++;
         delay = true;
         setTimeout(nextPic, 1000);
