@@ -2,7 +2,7 @@
  * Art Jam - Memory Mixer
  * Willow Casinghino
  * 
- * Art project. Try to push the ball into the hole and discover what follows.
+ * Art project. Explore and mash together memories (images) to make all new compositions.
  */
 
 "use strict";
