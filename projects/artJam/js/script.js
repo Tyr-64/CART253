@@ -46,6 +46,8 @@ let i = 0;
 
 let delay = false;
 
+let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+
 let hand = {
     x: undefined,
     y: undefined,
@@ -55,8 +57,19 @@ let hand = {
     img3: undefined,
 }
 
+
+
+// set canvas and background, disable cursor visibility
+function setup() {
+    createCanvas(800, 500);
+    background("#000000ff");
+    noCursor();
+
+}
+
 // preload image assets
 function preload() {
+    shuffle(nums, true);
     hand.img1 = loadImage('./assets/images/left.png');
     hand.img2 = loadImage('./assets/images/middle.png');
     hand.img3 = loadImage('./assets/images/right.png');
@@ -67,28 +80,21 @@ function preload() {
     bg.frown = loadImage('./assets/images/bgfrown.jpg');
     bg.left = loadImage('./assets/images/bgarrowleft.jpg');
     bg.right = loadImage('./assets/images/bgarrowright.jpg');
-    display.pics[0] = loadImage('./assets/images/1.jpg');
-    display.pics[1] = loadImage('./assets/images/2.jpg');
-    display.pics[2] = loadImage('./assets/images/3.jpg');
-    display.pics[3] = loadImage('./assets/images/4.jpg');
-    display.pics[4] = loadImage('./assets/images/5.jpg');
-    display.pics[5] = loadImage('./assets/images/6.jpg');
-    display.pics[6] = loadImage('./assets/images/7.jpg');
-    display.pics[7] = loadImage('./assets/images/8.jpg');
-    display.pics[8] = loadImage('./assets/images/9.jpg');
-    display.pics[9] = loadImage('./assets/images/10.jpg');
-    display.pics[10] = loadImage('./assets/images/11.jpg');
-    display.pics[11] = loadImage('./assets/images/12.jpg');
-    display.pics[12] = loadImage('./assets/images/13.jpg');
-    display.pics[13] = loadImage('./assets/images/14.jpg');
-    display.pics[14] = loadImage('./assets/images/15.jpg');
-}
-
-// set canvas and background, disable cursor visibility
-function setup() {
-    createCanvas(800, 500);
-    background("#000000ff");
-    noCursor();
+    display.pics[nums[0]] = loadImage('./assets/images/1.jpg');
+    display.pics[nums[1]] = loadImage('./assets/images/2.jpg');
+    display.pics[nums[2]] = loadImage('./assets/images/3.jpg');
+    display.pics[nums[3]] = loadImage('./assets/images/4.jpg');
+    display.pics[nums[4]] = loadImage('./assets/images/5.jpg');
+    display.pics[nums[5]] = loadImage('./assets/images/6.jpg');
+    display.pics[nums[6]] = loadImage('./assets/images/7.jpg');
+    display.pics[nums[7]] = loadImage('./assets/images/8.jpg');
+    display.pics[nums[8]] = loadImage('./assets/images/9.jpg');
+    display.pics[nums[9]] = loadImage('./assets/images/10.jpg');
+    display.pics[nums[10]] = loadImage('./assets/images/11.jpg');
+    display.pics[nums[11]] = loadImage('./assets/images/12.jpg');
+    display.pics[nums[12]] = loadImage('./assets/images/13.jpg');
+    display.pics[nums[13]] = loadImage('./assets/images/14.jpg');
+    display.pics[nums[14]] = loadImage('./assets/images/15.jpg');
 }
 
 
