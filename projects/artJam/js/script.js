@@ -97,8 +97,8 @@ function setup() {
 */
 function draw() {
     background("#000000ff");
-    if (i == 14) {
-        setTimeout(finalScreen, 1500);
+    if (i == 15) {
+        setTimeout(finalScreen, 700);
     }
     image(bg.main, 0, 0);
     buttonPress();
@@ -282,6 +282,11 @@ function blendLeft() {
 // a nice gallery view of your works :D - draws the end screen then allows the code to break a bit later, making this the last rendered frame
 function finalScreen() {
     background("#ffffffff");
-    image(display.left, 30, 40, 328, 432);
-    image(display.right, 430, 40, 328, 432);
+    if (display.leftActive == true) {
+        image(display.left, 30, 40, 328, 432);
+    }
+    if (display.rightActive == true) {
+        image(display.right, 430, 40, 328, 432);
+    }
+
 }
