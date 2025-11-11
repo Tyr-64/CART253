@@ -1,5 +1,5 @@
 /**
- * Art Jam - Ball Action
+ * Art Jam - Memory Mixer
  * Willow Casinghino
  * 
  * Art project. Try to push the ball into the hole and discover what follows.
