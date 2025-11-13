@@ -64,10 +64,9 @@ function setup() {
     createCanvas(800, 500);
     background("#000000ff");
     noCursor();
-
 }
 
-// preload image assets
+// preload image assets in a random order
 function preload() {
     shuffle(nums, true);
     hand.img1 = loadImage('./assets/images/left.png');
