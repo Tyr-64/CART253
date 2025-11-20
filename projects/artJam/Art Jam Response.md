@@ -1,10 +1,7 @@
 Works viewed -\
-Pansy's (Ziyan's) flower art -
-https://pansyqwq.github.io/cart253/ArtJam/\
-Ahmad's day-night self portrait -
-https://ahmadalrazzaz.github.io/cart253/art-jam/\
-Sama's ASCII 8-Ball -
-https://consumedlocusts.github.io/cart253/topics/billy-ball/\
+Pansy's (Ziyan's) flower art - https://pansyqwq.github.io/cart253/ArtJam/\
+Ahmad's day-night self portrait - https://ahmadalrazzaz.github.io/cart253/art-jam/\
+Sama's ASCII 8-Ball - https://consumedlocusts.github.io/cart253/topics/billy-ball/\
 \
 I really enjoyed all of what I saw. Pansy and Sama's portraits took a
 similar symbolic approach but with very different results while Ahmad's
@@ -57,3 +54,4 @@ easier to interpret since it feels fairly obvious she's represented
 directly by the... pansy. New depth is found through repetition,
 infinite compositions folding out from one idea. If you let it, this
 thoughtful reflection can fill the space and keep on going.
+
