@@ -1,29 +1,26 @@
 /**
- * Title of Project
- * Author Name
+ * Overflow(?)
+ * Willow Casinghino
  * 
- * HOW EMBARRASSING! I HAVE NO DESCRIPTION OF MY PROJECT!
- * PLEASE REMOVE A GRADE FROM MY WORK IF IT'S GRADED!
+ * Dynamic image warper, see how you subject loses form the more you engage with it. try writing some poetry.
  */
 
 "use strict";
 
 /**
- * OH LOOK I DIDN'T DESCRIBE SETUP!!
+ * set up important variables like counters and images
 */
-let typing = '';
-let gBuffer = undefined;
+
 // incrementers
 let iS = 0;
 let wI = 0;
 let pI = 0;
 let i = 0;
-let fill = 0;
-let replace = 0;
 let pushDist = 0;
 let c = 0;
 let build = 0;
-let log = '';
+let replace = 0;
+// image objects storing variables, note that the math doesn't play nice with inconsistent or odd sizes
 let clown = {
     image: undefined,
     x: 100,
@@ -61,6 +58,7 @@ let writing = {
         boundH: 150,
         boundW: 200,
     },
+    // font settings here
     size: 23,
     leading: 14.9,
     fill: 'white',
@@ -69,13 +67,15 @@ let writing = {
     wrapType: 'CHAR',
     font: 'Courier New',
 }
+// variables important for image drawing process
+let typing = '';
 let capture = undefined;
 let cBuffer = undefined;
 let video = true;
 let fileBuffer = undefined;
+let gBuffer = undefined;
 
 function preload() {
-    //pre.image = loadImage('./assets/images/turntable.jpg');
     pre.image = createImage(pre.width, pre.height);
     clown.image = loadImage('./assets/images/clown.png');
     post.image = createImage(post.width, post.height);
@@ -87,9 +87,7 @@ function setup() {
     background(0);
     post.image.loadPixels();
     mid.image.loadPixels();
-    //pre.image.resize(pre.width, pre.height);
     pre.image.loadPixels();
-    //image(pre.image, 0, 0);
     gBuffer = createGraphics(writing.image.width, writing.image.height);
     cBuffer = createGraphics(pre.width, pre.height);
     console.log(pre.image.pixels);
@@ -112,6 +110,7 @@ function setup() {
  * Call on functions to draw text, generate warped image from text, and do a progressive scan-line reveal of the image
 */
 function draw() {
+    // uses video input by default, drag an drop image onto canvas to use image instead
     if (video == true) {
         cBuffer.image(capture, 0, 0);
     }
@@ -140,7 +139,7 @@ function draw() {
     // keep placing until the horizontal line of pre image data is finished, then start a new line while removing the distance of pixels added from the text
     moveNwarp();
     // copy the midway image to the post image progressively to create a reveal effect. it still updates after its finished. rSpeed param controls the reveal speed (1-20 or so)
-    reveal(1);
+    reveal(4);
 
 }
 
@@ -191,6 +190,7 @@ function reveal(rSpeed) {
     image(writing.image, 150, 0, writing.width, writing.height);
     image(post.image, 150, 0, post.width, post.height);
 }
+// take in file data and put it in buffer (its an HTML element and not a regular image so it needs to go into a graphics buffer first)
 function handleFile(file) {
     if (file.type === 'image') {
         video = false;
@@ -198,7 +198,7 @@ function handleFile(file) {
         fileBuffer.hide();
     }
 }
-
+// typing detection. with some extras
 function keyTyped() {
     if (key === 'a') {
         typing += 'a';
