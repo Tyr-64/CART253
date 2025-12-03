@@ -11,12 +11,10 @@
 /**
  * OH LOOK I DIDN'T DESCRIBE SETUP!!
 */
-let x = 0;
-let y = 0;
 let typing = '';
 let gBuffer = undefined;
+// incrementers
 let iS = 0;
-let iP = 0;
 let wI = 0;
 let pI = 0;
 let i = 0;
@@ -26,15 +24,23 @@ let pushDist = 0;
 let c = 0;
 let build = 0;
 let log = '';
+let clown = {
+    image: undefined,
+    x: 100,
+    y: 100,
+    on: false,
+    width: 0,
+    height: 0,
+}
 
 let post = {
-    width: 500,
+    width: 600,
     height: 400,
     image: undefined
 
 }
 let mid = {
-    width: 500,
+    width: 600,
     height: 400,
     image: undefined
 
@@ -48,47 +54,98 @@ let pre = {
 }
 let writing = {
     image: {
-        width: 500,
+        width: 600,
         height: 400,
     },
     text: {
         boundH: 150,
         boundW: 200,
     },
+    size: 23,
+    leading: 14.9,
+    fill: 'white',
+    sWeight: 2,
+    strokeVal: 0,
+    wrapType: 'CHAR',
+    font: 'Courier New',
 }
+let capture = undefined;
+let cBuffer = undefined;
+let video = true;
+let fileBuffer = undefined;
 
 function preload() {
-    pre.image = loadImage('./assets/images/gargoylemid.jpg');
+    //pre.image = loadImage('./assets/images/turntable.jpg');
+    pre.image = createImage(pre.width, pre.height);
+    clown.image = loadImage('./assets/images/clown.png');
     post.image = createImage(post.width, post.height);
     mid.image = createImage(mid.width, mid.height);
     writing.image = createImage(writing.image.width, writing.image.height);
 }
 function setup() {
-    createCanvas(600, 400);
+    let p = createCanvas(700, 400);
     background(0);
     post.image.loadPixels();
     mid.image.loadPixels();
-    pre.image.resize(pre.width, pre.height);
+    //pre.image.resize(pre.width, pre.height);
     pre.image.loadPixels();
     //image(pre.image, 0, 0);
     gBuffer = createGraphics(writing.image.width, writing.image.height);
+    cBuffer = createGraphics(pre.width, pre.height);
     console.log(pre.image.pixels);
     c = mid.width * mid.height * 4;
-    gBuffer.textSize(22);
-    gBuffer.textLeading(13);
-    gBuffer.fill('white');
-    gBuffer.strokeWeight(2);
-    gBuffer.stroke(0);
-    gBuffer.textWrap(CHAR);
-    gBuffer.textFont('Courier New');
-
+    gBuffer.textSize(writing.size);
+    gBuffer.textLeading(writing.leading);
+    gBuffer.fill(writing.fill);
+    gBuffer.strokeWeight(writing.sWeight);
+    gBuffer.stroke(writing.strokeVal);
+    gBuffer.textWrap(writing.wrapType);
+    gBuffer.textFont(writing.font);
+    capture = createCapture(VIDEO);
+    capture.size = (pre.width, pre.height);
+    capture.hide();
+    p.drop(handleFile);
 }
 
 
 /**
- * OOPS I DIDN'T DESCRIBE WHAT MY DRAW DOES!
+ * Call on functions to draw text, generate warped image from text, and do a progressive scan-line reveal of the image
 */
 function draw() {
+    if (video == true) {
+        cBuffer.image(capture, 0, 0);
+    }
+    else if (video == false) {
+        cBuffer.image(fileBuffer, 0, 0, pre.width, pre.height);
+    }
+    pre.image.copy(cBuffer, 0, 0, pre.width, pre.height, 0, 0, pre.width, pre.height);
+    pre.image.loadPixels();
+    // a little clown treat.
+    if (clown.on == true && clown.width < 100) {
+        push();
+        gBuffer.imageMode(CENTER);
+        clown.width++;
+        clown.height++;
+        gBuffer.image(clown.image, clown.x, clown.y, clown.width, clown.height);
+        pop();
+        if (clown.width == 100) {
+            clown.on = false;
+            clown.width = 0;
+            clown.height = 0;
+        }
+    }
+    // generate text by making an image from a graphics buffer, which then copies its array data to the midway buffer 
+    textGenerate();
+    // scans through midway buffer. if no live pixel then copy the pre image to itself as normal. if there is a live pixel then skip over it but do not move through pre image data.
+    // keep placing until the horizontal line of pre image data is finished, then start a new line while removing the distance of pixels added from the text
+    moveNwarp();
+    // copy the midway image to the post image progressively to create a reveal effect. it still updates after its finished. rSpeed param controls the reveal speed (1-20 or so)
+    reveal(1);
+
+}
+
+
+function textGenerate() {
     gBuffer.text(typing, 50, 20, 300, 400);
     writing.image.copy(gBuffer, 0, 0, gBuffer.width, gBuffer.height, 0, 0, gBuffer.width, gBuffer.height);
 
@@ -98,8 +155,11 @@ function draw() {
             mid.image.pixels[wI + pI] = writing.image.pixels[wI + pI];
         }
     }
-    writing.image.loadPixels();
+    writing.image.updatePixels();
 
+}
+
+function moveNwarp() {
     for (i = 0; i <= (mid.width * mid.height * 4); i += 4) {
         if (writing.image.pixels[i + 3 + iS - ((mid.width - pre.width) * 4)] === 0) {
             mid.image.pixels[i + iS - ((mid.width - pre.width) * 4)] = pre.image.pixels[i];
@@ -112,8 +172,6 @@ function draw() {
             pushDist += 4;
             iS += 4;
         }
-
-
         if (i % (pre.width * 4) === 0) {
             iS -= pushDist;
             iS += ((mid.width - pre.width) * 4);
@@ -121,27 +179,24 @@ function draw() {
         }
     }
     iS = 0;
-    //console.log(log);
-
     mid.image.updatePixels();
-    if (c < (mid.width * mid.height * 4)) {
-        // for (build = (mid.width * mid.height * 4); build > (mid.width * mid.height * 4) - c; build--) {
-        //     post.image.pixels[build + c] = mid.image.pixels[build + c];
-        //     post.image.pixels[build + c + (mid.width * 4)] = mid.image.pixels[build + c + (mid.width * 4)];
-        //     // post.image.pixels[build + c + (mid.width * 8)] = mid.image.pixels[build + c + (mid.width * 8)];
-        //     // post.image.pixels[build + c + (mid.width * 12)] = mid.image.pixels[build + c + (mid.width * 12)];
-        //     // post.image.pixels[build + c + (mid.width * 16)] = mid.image.pixels[build + c + (mid.width * 16)];
-        //     // post.image.pixels[build + c + (mid.width * 20)] = mid.image.pixels[build + c + (mid.width * 20)];
-        // }
-    }
-    c -= 200;
+}
+function reveal(rSpeed) {
+    c -= (rSpeed * 100);
     for (replace = (mid.height * mid.width * 4); replace > c; replace--) {
         post.image.pixels[replace] = mid.image.pixels[replace];
     }
 
     post.image.updatePixels();
-    image(writing.image, 100, 0, writing.width, writing.height);
-    image(post.image, 100, 0, post.width, post.height);
+    image(writing.image, 150, 0, writing.width, writing.height);
+    image(post.image, 150, 0, post.width, post.height);
+}
+function handleFile(file) {
+    if (file.type === 'image') {
+        video = false;
+        fileBuffer = createImg(file.data, '');
+        fileBuffer.hide();
+    }
 }
 
 function keyTyped() {
@@ -235,15 +290,36 @@ function keyTyped() {
     else if (keyCode === 13) {
         typing += '                       \n';
     }
-}
-
-function sTp() {
-
-}
-
-function textAdd() {
-
-}
-function textGen() {
-    //text('hello', 20, 20);
+    else if (keyCode === 49) {
+        typing += '💥';
+    }
+    else if (keyCode === 50) {
+        typing += '🧊';
+    }
+    else if (keyCode === 51) {
+        typing += '🕴️';
+    }
+    else if (keyCode === 52) {
+        typing += '👍';
+    }
+    else if (keyCode === 53) {
+        typing += '💿';
+    }
+    else if (keyCode === 54) {
+        typing += '🌱';
+    }
+    else if (keyCode === 55) {
+        typing += '♦️';
+    }
+    else if (keyCode === 56) {
+        typing += '💫';
+    }
+    else if (keyCode === 57) {
+        typing += '💋';
+    }
+    else if (keyCode === 48) {
+        clown.on = true;
+        clown.x = random(300) + 50;
+        clown.y = random(300) + 50;
+    }
 }
