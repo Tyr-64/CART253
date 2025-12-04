@@ -204,14 +204,14 @@ function buildQuilt() {
         quilt.hC++;
         quilt.lC = 0;
     }
-    if (quilt.hC == 3) {
+    if (quilt.hC == 5) {
         quiltFinished();
     }
 }
 // when the quilt is finished tabulate the scores and tell draw to show the end screen
 function quiltFinished() {
     quilt.finished = true;
-    tile.cohesion = ((tile.rScore * 1.5) + (tile.gScore * 1.5) + (tile.bScore * 1.5)) * 2;
+    tile.cohesion = ((tile.rScore * .8) + (tile.gScore * .8) + (tile.bScore * .8)) * 3;
     tile.cohesion = int(tile.cohesion);
     console.log(tile.cohesion);
     tile.flairScore = int(tile.flairScore) * 4;
