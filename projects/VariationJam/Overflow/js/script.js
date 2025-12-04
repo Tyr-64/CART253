@@ -324,34 +324,34 @@ function keyTyped() {
         typing += '                       \n';
     }
     else if (keyCode === 49) {
-        typing += '💥';
+        typing += '1';
     }
     else if (keyCode === 50) {
-        typing += '🧊';
+        typing += '2';
     }
     else if (keyCode === 51) {
-        typing += '🕴️';
+        typing += '3';
     }
     else if (keyCode === 52) {
-        typing += '👍';
+        typing += '4';
     }
     else if (keyCode === 53) {
-        typing += '💿';
+        typing += '5';
     }
     else if (keyCode === 54) {
-        typing += '🌱';
+        typing += '6';
     }
     else if (keyCode === 55) {
-        typing += '♦️';
+        typing += '7';
     }
     else if (keyCode === 56) {
-        typing += '💫';
+        typing += '8';
     }
     else if (keyCode === 57) {
-        typing += '💋';
+        typing += '9';
     }
     else if (keyCode === 48) {
-
+        '0'
     }
 
 }
