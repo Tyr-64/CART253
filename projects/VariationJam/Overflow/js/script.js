@@ -82,6 +82,8 @@ function preload() {
     mid.image = createImage(mid.width, mid.height);
     writing.image = createImage(writing.image.width, writing.image.height);
 }
+// set up canvas and fill in background, load pixels to create their pixel arrays, create the graphics buffers for elements that need to be converted to images,
+//  set up the text properties for gBuffer, set up the video capture that will go into cBuffer, set up file handler to call function if file is dropped on canvas
 function setup() {
     let p = createCanvas(700, 400);
     background(0);
@@ -110,7 +112,7 @@ function setup() {
  * Call on functions to draw text, generate warped image from text, and do a progressive scan-line reveal of the image
 */
 function draw() {
-    // uses video input by default, drag an drop image onto canvas to use image instead
+    // uses video input by default, drag and drop image onto canvas to use image instead
     if (video == true) {
         cBuffer.image(capture, 0, 0);
     }
@@ -180,6 +182,7 @@ function moveNwarp() {
     iS = 0;
     mid.image.updatePixels();
 }
+
 function reveal(rSpeed) {
     c -= (rSpeed * 100);
     for (replace = (mid.height * mid.width * 4); replace > c; replace--) {

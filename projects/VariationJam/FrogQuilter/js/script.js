@@ -1,8 +1,8 @@
 /**
- * Frogfrogfrog
- * Pippin Barr
- * 
- * A game of catching flies with your frog-tongue
+ * FrogQuilter
+ * Willow Casinghino
+ * Based on frogfrogfrog by Pippin Barr
+ * A game of quilting with your frog tongue
  * 
  * Instructions:
  * - Move the frog with your mouse
@@ -33,34 +33,104 @@ const frog = {
         state: "idle" // State can be: idle, outbound, inbound
     }
 };
+// tile values for image and scoring
+let tile = {
+    image: [],
+    gVal: [.2, 0, .2, 0, 0, .3, .8, .9, 1, .5, 0, .2, .3, 0, .8],
+    rVal: [0, .4, 0, 0, 0, .4, .1, 0, 0, .6, .5, .9, 1, 1, 0],
+    bVal: [.9, .8, .9, .9, .9, .5, 0, .4, 0, 0, 0, 0, 0, 0, 0],
+    flairVal: [.6, .4, .3, .5, .4, .6, .5, .6, .9, .3, .8, .4, .2, .5, .8],
+    gScore: 0,
+    rScore: 0,
+    bScore: 0,
+    cohesion: 0,
+    flairScore: 0,
+}
+let tIndex = 0;
+let started = false;
 
 // Our fly
 // Has a position, size, and speed of horizontal movement
-const fly = {
+let fly = {
     x: 0,
     y: 200, // Will be random
     size: 10,
-    speed: 3
+    speed: 3,
+    qTile: undefined,
 };
+// quilt object for building and display
+let quilt = {
+    image: undefined,
+    lC: 0,
+    hC: 0,
+    width: 0,
+    height: 0,
+    x: 20,
+    y: 0,
+    finished: false,
+}
 
 /**
  * Creates the canvas and initializes the fly
  */
+// preload tile images
+function preload() {
+    tile.image[0] = loadImage('./assets/images/b1.jpg');
+    tile.image[1] = loadImage('./assets/images/b2.jpg');
+    tile.image[2] = loadImage('./assets/images/b3.jpg');
+    tile.image[3] = loadImage('./assets/images/b4.jpg');
+    tile.image[4] = loadImage('./assets/images/b5.jpg');
+    tile.image[5] = loadImage('./assets/images/br.jpg');
+    tile.image[6] = loadImage('./assets/images/g1.jpg');
+    tile.image[7] = loadImage('./assets/images/g2.jpg');
+    tile.image[8] = loadImage('./assets/images/g3.jpg');
+    tile.image[9] = loadImage('./assets/images/gr.jpg');
+    tile.image[10] = loadImage('./assets/images/itsbrown.jpg');
+    tile.image[11] = loadImage('./assets/images/r1.jpg');
+    tile.image[12] = loadImage('./assets/images/r2.jpg');
+    tile.image[13] = loadImage('./assets/images/r3.jpg');
+    tile.image[14] = loadImage('./assets/images/g4.jpg');
+}
+// set up tile and quilt for construction
 function setup() {
     createCanvas(640, 480);
+    quilt.width = (fly.size * 40);
+    quilt.height = (fly.size * 40);
+    fly.qTile = createImage(fly.size * 8, fly.size * 8);
+    quilt.image = createImage(quilt.width, quilt.height);
+
+
 
     // Give the fly its first random position
     resetFly();
 }
-
+// draw background and run fly and frog functions, if fly is caught build tile onto quilt. also displays start screen until mouse is pressed. when quilt is complete displays score and quilt
 function draw() {
     background("#87ceeb");
-    moveFly();
-    drawFly();
-    moveFrog();
-    moveTongue();
-    drawFrog();
-    checkTongueFlyOverlap();
+    startScreen();
+    if (quilt.finished == false && started == true) {
+        moveFly();
+        drawFly();
+        moveFrog();
+        moveTongue();
+        drawFrog();
+        checkTongueFlyOverlap();
+        image(quilt.image, quilt.x, quilt.y);
+    }
+    else if (started == true) {
+        if (quilt.x <= 140) {
+            quilt.x += 3;
+            quilt.y += .5;
+            quilt.width--;
+            quilt.height--;
+        }
+        else {
+            textFont('Impact', 40);
+            text('Cohesion: ' + str(tile.cohesion), 100, 450);
+            text('Flair: ' + str(tile.flairScore), 400, 450);
+        }
+        image(quilt.image, quilt.x, quilt.y, quilt.width, quilt.height);
+    }
 }
 
 /**
@@ -70,6 +140,8 @@ function draw() {
 function moveFly() {
     // Move the fly
     fly.x += fly.speed;
+    fly.y = random(fly.y - 10, fly.y + 10);
+    fly.y = constrain(fly.y, 50, 440);
     // Handle the fly going off the canvas
     if (fly.x > width) {
         resetFly();
@@ -85,14 +157,29 @@ function drawFly() {
     fill("#000000");
     ellipse(fly.x, fly.y, fly.size);
     pop();
+    image(fly.qTile, fly.x - 20, fly.y + 5, fly.size * 8, fly.size * 8);
 }
+// a start screen that goes away with mouse press
+function startScreen() {
+    if (started == false) {
+        push();
+        textFont('Courier New', 14.5);
+        textStyle(BOLD);
+        textAlign(CENTER);
+        text('Frog wants to make a quilt, but all the flies are stealing the fabric! \n Catch the flies using your mouse to build the quilt. \n Color cohesion and flair are scored, but really just have fun! \n As the quilt grows it gets harder to catch the flies. \n \n Click the mouse to start.', 320, 200);
+        pop();
+    }
+}
+
 
 /**
  * Resets the fly to the left with a random y
  */
 function resetFly() {
+    tIndex = int(random(15));
     fly.x = 0;
     fly.y = random(0, 300);
+    fly.qTile.copy(tile.image[tIndex], 0, 0, tile.image[tIndex].width, tile.image[tIndex].height, 0, 0, fly.size * 8, fly.size * 8);
 }
 
 /**
@@ -100,6 +187,34 @@ function resetFly() {
  */
 function moveFrog() {
     frog.body.x = mouseX;
+}
+// add the tile caught to the quilt for a 5x5 quilt
+function buildQuilt() {
+    if (quilt.lC < 5) {
+        quilt.image.copy(tile.image[tIndex], 0, 0, tile.image[tIndex].width, tile.image[tIndex].height, quilt.lC * (fly.size * 8), quilt.hC * (fly.size * 8), fly.size * 8, fly.size * 8);
+        tile.rScore += tile.rVal[tIndex];
+        tile.gScore += tile.gVal[tIndex];
+        tile.bScore += tile.bVal[tIndex];
+        console.log(tile.rScore);
+        tile.flairScore += tile.flairVal[tIndex];
+        console.log('built');
+        quilt.lC++;
+    }
+    if (quilt.lC == 5) {
+        quilt.hC++;
+        quilt.lC = 0;
+    }
+    if (quilt.hC == 3) {
+        quiltFinished();
+    }
+}
+// when the quilt is finished tabulate the scores and tell draw to show the end screen
+function quiltFinished() {
+    quilt.finished = true;
+    tile.cohesion = ((tile.rScore * 1.5) + (tile.gScore * 1.5) + (tile.bScore * 1.5)) * 2;
+    tile.cohesion = int(tile.cohesion);
+    console.log(tile.cohesion);
+    tile.flairScore = int(tile.flairScore) * 4;
 }
 
 /**
@@ -163,13 +278,15 @@ function checkTongueFlyOverlap() {
     // Get distance from tongue to fly
     const d = dist(frog.tongue.x, frog.tongue.y, fly.x, fly.y);
     // Check if it's an overlap
-    const eaten = (d < frog.tongue.size/2 + fly.size/2);
+    const eaten = (d < frog.tongue.size / 2 + fly.size / 2);
     if (eaten) {
+        buildQuilt();
         // Reset the fly
         resetFly();
         // Bring back the tongue
         frog.tongue.state = "inbound";
     }
+
 }
 
 /**
@@ -179,4 +296,5 @@ function mousePressed() {
     if (frog.tongue.state === "idle") {
         frog.tongue.state = "outbound";
     }
+    started = true;
 }
