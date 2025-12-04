@@ -70,10 +70,15 @@ let writing = {
 // variables important for image drawing process
 let typing = '';
 let capture = undefined;
-let cBuffer = undefined;
 let video = true;
-let fileBuffer = undefined;
+let fileBuffer = {
+    bg: undefined,
+    sticker: undefined,
+    sSize: undefined,
+}
 let gBuffer = undefined;
+let cBuffer = undefined;
+let sBuffer = undefined;
 
 function preload() {
     pre.image = createImage(pre.width, pre.height);
@@ -85,7 +90,12 @@ function preload() {
 // set up canvas and fill in background, load pixels to create their pixel arrays, create the graphics buffers for elements that need to be converted to images,
 //  set up the text properties for gBuffer, set up the video capture that will go into cBuffer, set up file handler to call function if file is dropped on canvas
 function setup() {
-    let p = createCanvas(700, 400);
+    createCanvas(700, 400);
+    let bg = createImg('./assets/images/bgchange.png', 'drop here to change background');
+    //bg.size(300, AUTO);
+    bg.position(windowWidth / 2 - 650, windowHeight / 2 - 150);
+    let sticker = createImg('./assets/images/stchange.png', 'drop here to change the sticker');
+    sticker.position(windowWidth / 2 + 350, windowHeight / 2 - 150);
     background(0);
     post.image.loadPixels();
     mid.image.loadPixels();
@@ -104,7 +114,8 @@ function setup() {
     capture = createCapture(VIDEO);
     capture.size = (pre.width, pre.height);
     capture.hide();
-    p.drop(handleFile);
+    bg.drop(bgFile);
+    sticker.drop(stickerFile);
 }
 
 
@@ -117,31 +128,19 @@ function draw() {
         cBuffer.image(capture, 0, 0);
     }
     else if (video == false) {
-        cBuffer.image(fileBuffer, 0, 0, pre.width, pre.height);
+        cBuffer.image(fileBuffer.bg, 0, 0, pre.width, pre.height);
     }
     pre.image.copy(cBuffer, 0, 0, pre.width, pre.height, 0, 0, pre.width, pre.height);
     pre.image.loadPixels();
-    // a little clown treat.
-    if (clown.on == true && clown.width < 100) {
-        push();
-        gBuffer.imageMode(CENTER);
-        clown.width++;
-        clown.height++;
-        gBuffer.image(clown.image, clown.x, clown.y, clown.width, clown.height);
-        pop();
-        if (clown.width == 100) {
-            clown.on = false;
-            clown.width = 0;
-            clown.height = 0;
-        }
-    }
+    // draw stickers with animation (with a little clown surprise)
+    drawSticker();
     // generate text by making an image from a graphics buffer, which then copies its array data to the midway buffer 
     textGenerate();
     // scans through midway buffer. if no live pixel then copy the pre image to itself as normal. if there is a live pixel then skip over it but do not move through pre image data.
     // keep placing until the horizontal line of pre image data is finished, then start a new line while removing the distance of pixels added from the text
     moveNwarp();
-    // copy the midway image to the post image progressively to create a reveal effect. it still updates after its finished. rSpeed param controls the reveal speed (1-20 or so)
-    reveal(4);
+    // copy the midway image to the post image progressively to create a reveal effect. it still updates after its finished. rSpeed param controls the reveal speed (1-100 or so)
+    reveal(5.2);
 
 }
 
@@ -193,13 +192,44 @@ function reveal(rSpeed) {
     image(writing.image, 150, 0, writing.width, writing.height);
     image(post.image, 150, 0, post.width, post.height);
 }
+function drawSticker() {
+    if (clown.on == true && clown.width < 100) {
+        push();
+        gBuffer.imageMode(CENTER);
+        clown.width++;
+        clown.height++;
+        gBuffer.image(clown.image, clown.x, clown.y, clown.width, clown.height);
+        pop();
+        if (clown.width == 100) {
+            clown.on = false;
+            clown.width = 0;
+            clown.height = 0;
+        }
+    }
+}
 // take in file data and put it in buffer (its an HTML element and not a regular image so it needs to go into a graphics buffer first)
-function handleFile(file) {
+function bgFile(file) {
     if (file.type === 'image') {
         video = false;
-        fileBuffer = createImg(file.data, '');
-        fileBuffer.hide();
+        fileBuffer.bg = createImg(file.data, '');
+        fileBuffer.bg.hide();
     }
+}
+function stickerFile(file) {
+    if (file.type === 'image') {
+        fileBuffer.sticker = createImg(file.data, '', undefined, setSticker);
+    }
+}
+function setSticker() {
+    fileBuffer.sSize = fileBuffer.sticker.size();
+    fileBuffer.sticker.hide();
+    sBuffer = createGraphics(pre.height / 2, pre.width / 2);
+    clown.image = createImage(pre.width / 2, pre.width / 2);
+    console.log(fileBuffer.sSize.width);
+    sBuffer.image(fileBuffer.sticker, 0, 0, pre.width / 2, fileBuffer.sSize.height * ((pre.width / 2) / fileBuffer.sSize.width));
+    clown.image.copy(sBuffer, 0, 0, pre.width / 2, pre.height / 2, 0, 0, pre.width / 2, pre.width / 2);
+    console.log(fileBuffer.sSize.height * ((pre.width / 2) / fileBuffer.sSize.width));
+
 }
 // typing detection. with some extras
 function keyTyped() {
@@ -321,8 +351,14 @@ function keyTyped() {
         typing += '💋';
     }
     else if (keyCode === 48) {
-        clown.on = true;
-        clown.x = random(300) + 50;
-        clown.y = random(300) + 50;
+
     }
+
+}
+function mousePressed() {
+    clown.on = true;
+    clown.width = 0;
+    clown.height = 0;
+    clown.x = mouseX - 150;
+    clown.y = mouseY;
 }
