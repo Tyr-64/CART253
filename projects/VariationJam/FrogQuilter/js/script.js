@@ -36,9 +36,9 @@ const frog = {
 // tile values for image and scoring
 let tile = {
     image: [],
-    gVal: [.2, 0, .2, 0, 0, .3, .8, .9, 1, .5, 0, .2, .3, 0, .8],
+    gVal: [.2, 0, .2, 0, 0, .3, .8, .9, 1, .6, 0, .2, .3, 0, .8],
     rVal: [0, .4, 0, 0, 0, .4, .1, 0, 0, .6, .5, .9, 1, 1, 0],
-    bVal: [.9, .8, .9, .9, .9, .5, 0, .4, 0, 0, 0, 0, 0, 0, 0],
+    bVal: [.9, .8, .9, .9, .9, .5, 0, .5, 0, 0, 0, 0, 0, 0, 0],
     flairVal: [.6, .4, .3, .5, .4, .6, .5, .6, .9, .3, .8, .4, .2, .5, .8],
     gScore: 0,
     rScore: 0,
@@ -115,6 +115,7 @@ function draw() {
         moveTongue();
         drawFrog();
         checkTongueFlyOverlap();
+        line(0, 10, 640, 10);
         image(quilt.image, quilt.x, quilt.y);
     }
     else if (started == true) {
@@ -211,10 +212,11 @@ function buildQuilt() {
 // when the quilt is finished tabulate the scores and tell draw to show the end screen
 function quiltFinished() {
     quilt.finished = true;
-    tile.cohesion = ((tile.rScore * .8) + (tile.gScore * .8) + (tile.bScore * .8)) * 3;
+    tile.cohesion = (-100 / (((max(tile.rScore, tile.bScore, tile.gScore) - tile.rScore) - tile.bScore) - tile.gScore)) * 7;
+    console.log(tile.cohesion);
     tile.cohesion = int(tile.cohesion);
     console.log(tile.cohesion);
-    tile.flairScore = int(tile.flairScore) * 4;
+    tile.flairScore = int(tile.flairScore) * 6;
 }
 
 /**
