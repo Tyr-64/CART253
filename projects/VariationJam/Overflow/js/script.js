@@ -351,7 +351,7 @@ function keyTyped() {
         typing += '9';
     }
     else if (keyCode === 48) {
-        '0'
+        typing += '0';
     }
 
 }
