@@ -140,7 +140,7 @@ function draw() {
     // keep placing until the horizontal line of pre image data is finished, then start a new line while removing the distance of pixels added from the text
     moveNwarp();
     // copy the midway image to the post image progressively to create a reveal effect. it still updates after its finished. rSpeed param controls the reveal speed (1-100 or so)
-    reveal(5.2);
+    reveal(20.2);
 
 }
 
@@ -213,6 +213,7 @@ function bgFile(file) {
         video = false;
         fileBuffer.bg = createImg(file.data, '');
         fileBuffer.bg.hide();
+        c = mid.width * mid.height * 4;
     }
 }
 function stickerFile(file) {
