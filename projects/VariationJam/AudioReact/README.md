@@ -6,7 +6,8 @@ Willow Casinghino
 
 ## Description
 
-An audio reactive visualizer tuned for Oneohtrix Point Never's song Waterfall. Click to start the song. 
+An audio reactive visualizer tuned for Oneohtrix Point Never's song Waterfall. Click to start the song.
+(psst. you can move the camera a bit while its playing too)
 
 ## Attribution
 
