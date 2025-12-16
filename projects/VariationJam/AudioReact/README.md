@@ -11,8 +11,6 @@ An audio reactive visualizer tuned for Oneohtrix Point Never's song Waterfall. C
 
 ## Attribution
 
-This bit should attribute any code, assets or other elements used taken from other sources. For example:
-
 > - This project uses [p5.js](https://p5js.org).
 > - The song Waterfall is by Danel Lopatin AKA Oneohtrix Point Never
 > - The models were created by Willow Casinghino

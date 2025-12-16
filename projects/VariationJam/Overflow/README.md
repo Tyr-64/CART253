@@ -8,7 +8,7 @@ Willow Casinghino
 
 An artistic image manipulation program. Either your webcam or a chosen image scans into view. It becomes less recognizable the more you interact with it.
 
-To use an image simply drag and drop an image file onto the canvas. Supports all letters, spacebar, enter, and some punctuation. Make sure to test the number keys!
+To use an image simply drag and drop an image file onto the canvas. Supports all letters, spacebar, enter, and some punctuation.
 
 
 ## Attribution
